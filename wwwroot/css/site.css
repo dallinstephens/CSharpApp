@@ -1,0 +1,401 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+:root {
+  --footer-height: 60px;
+}
+
+body {
+  margin-bottom: 0;
+  background-color: #1b1c1e;
+  /* Optional: If your sticky search form overlaps content, add margin-top here */
+  /* margin-top: 38px; */
+}
+
+.form-floating>.form-control-plaintext::placeholder,
+.form-floating>.form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating>.form-control-plaintext:focus::placeholder,
+.form-floating>.form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Sticky Search Bar */
+#searchForm {
+  position: sticky;
+  top: 0px;
+  /* Sticks to the very top of the viewport */
+  height: 38px;
+  z-index: 1020;
+  /* Ensure it's above normal content, but below specific header elements if they need to be above it */
+  background-color: #f8f9fa;
+}
+
+#searchForm .input-group,
+#searchForm .input-group .form-control,
+#searchForm .input-group .input-group-text {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+#searchForm .input-group {
+  box-shadow: 0px 10px 8px -5px rgba(0, 0, 0, 0.8);
+}
+
+/* NEW: Container for the scrollable table area */
+.table-responsive-container {
+  max-height: 82vh;
+  /* Defines the scrollable height */
+  overflow-y: auto;
+  /* IMPORTANT: Creates the scroll context for sticky positioning */
+  position: relative;
+  /* Often needed for proper sticky context */
+  border: 1px solid #dee2e6;
+  border-top: none;
+  border-bottom: none;
+}
+
+#dataTable thead#stickyTableHeader th.top-header-row-bg {
+  padding: 0 20px;
+}
+
+/* Sticky Table Header - Base style applied to all TH in the sticky header */
+/* This rule sets common sticky properties, z-index and background for specific rows below */
+#dataTable thead#stickyTableHeader th {
+  position: sticky;
+  color: white;
+  border: 1px solid #1b1c1e;
+  padding: 0;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+  /* Ensure height consistency across all sticky th elements */
+  height: 50px !important;
+  /* This needs to match the height used in `top` calculations below */
+}
+
+/* NEW: Style for the FIRST header row's TH (e.g., the colspan="8" row) */
+#dataTable thead#stickyTableHeader tr:first-child th {
+  top: 0;
+  /* Sticks to the very top of the scrollable container */
+  background-color: #51575c !important;
+  /* Specific background for the top header row */
+  z-index: 1040;
+  /* Higher than the second header row and content */
+}
+
+/* NEW: Style for the SECOND header row's TH (e.g., Qty, Click Image, SKU, etc.) */
+#dataTable thead#stickyTableHeader tr:nth-child(2) th {
+  /* Sticks directly below the first header row.
+       The 'top' value should be the exact height of the first header row.
+       Given your `height: 50px;` on all `th`, this will be 50px. */
+  top: 48px;
+  /* This is the key for the second sticky row */
+  background-color: #1b1c1e !important;
+  /* Specific background for the second header row */
+  z-index: 1035;
+  /* Lower than the first header row (1040), but higher than content (and search form) */
+}
+
+
+/* NEW: Sticky Table Footer */
+#dataTable tfoot #footerSummaryRow td {
+  position: sticky;
+  bottom: 0;
+  background-color: #e9ecef;
+  z-index: 10;
+  /* Lower than header z-index, but above body content */
+  box-shadow: 0 -2px 2px -1px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 2px solid #ccc;
+}
+
+
+/* --- Consolidated Table Cell & Header Styling --- */
+table.table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+table.table th,
+table.table td {
+  box-sizing: border-box;
+  vertical-align: middle !important;
+  text-align: center;
+  height: 40px;
+  /* Height for data cells, assuming this is intended for tbody td */
+}
+
+/* Specific styling for headers (general TH properties) */
+/* The height is explicitly set in the sticky rules above for consistency */
+/* table.table th {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} */
+
+/* IMPORTANT: Target the first TH specifically to be the positioning context */
+/* This rule is generally for dropdowns/popovers inside the first th, not for stickiness */
+table.table th:first-child {
+  overflow: visible;
+  position: relative;
+  z-index: 1050;
+  /* Ensure dropdown/popover in this cell appears above other sticky elements */
+}
+
+/* Specific styling for data cells */
+table.table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- REMOVED WIDTH RULES - WIDTHS ARE NOW SET BY <COL> TAGS IN HTML --- */
+/*
+table.table th:first-child,
+table.table td:first-child {
+    width: 12%;
+}
+*/
+
+/* For the checkbox input itself */
+td input[type="checkbox"] {
+  transform: scale(2);
+  margin: 0 auto;
+  display: block;
+}
+
+/* --- CUSTOM DROPDOWN STYLES (Carefully revised) --- */
+/* Dropdown Container */
+.dropdown {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+/* Custom Dropdown Toggle Button */
+.dropdown-toggle-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  cursor: pointer;
+  border: 1px solid #fff;
+  background-color: #51575c;
+  color: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.dropdown-toggle-custom:hover,
+.dropdown-toggle-custom:focus {
+  background-color: #6c757d;
+  color: #fff;
+  outline: none;
+}
+
+/* Caret icon (the down arrow) */
+.dropdown-toggle-custom .caret {
+  margin-left: .3em;
+  font-size: 0.8em;
+  vertical-align: middle;
+  display: inline-block !important;
+  opacity: 1 !important;
+}
+
+/* Dropdown Menu (the content that appears) */
+.dropdown-menu-custom {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  width: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1060;
+  /* Higher than sticky headers */
+  border-radius: .25rem;
+  border: 1px solid rgba(0, 0, 0, .15);
+  padding: .5rem 0;
+  top: 100%;
+  left: 0;
+  margin-top: .25rem;
+  overflow: visible !important;
+}
+
+/* Ensure the specific dropdown menu for "selected items" can expand */
+#selectedItemsDropdownMenu {
+  width: auto !important;
+  min-width: 180px;
+}
+
+/* Show the dropdown menu when .show class is added by JavaScript */
+.dropdown-menu-custom.show {
+  display: block !important;
+}
+
+/* Dropdown Item (the "Unselect all" button inside the dropdown) */
+.dropdown-item-custom {
+  background-color: transparent;
+  border: none;
+  color: #212529;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-size: .875rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  white-space: normal !important;
+}
+
+.dropdown-item-custom:hover,
+.dropdown-item-custom:focus {
+  background-color: #e9ecef;
+  color: #212529;
+  outline: none;
+}
+
+#showSelectedToggle {
+  width: 3em;
+  height: 1.7em;
+  border-radius: 1em;
+  background-size: auto 1.5em;
+  transition: background-position .15s ease-in-out;
+}
+
+.dropdown-item-custom .form-check.form-switch {
+  display: flex;
+  align-items: center;
+  padding-left: 1.5rem;
+}
+
+/* Background color when a row's checkbox is checked */
+#dataTable tbody tr.table-checked td {
+  background-color: #f5f5f5;
+}
+
+/* Background color when a data row is hovered over */
+#dataTable tbody tr:hover td {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* --- Styles for the Product Page column (Column 3) --- */
+/* .product-page-header, .product-page-cell width handled by <col> */
+.product-image {
+  max-width: 40px;
+  max-height: 40px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  border: 1px solid #ddd;
+}
+
+.product-page-cell:hover .product-image {
+  outline: 5px solid rgb(47, 255, 75);
+}
+
+.product-link {
+  display: block;
+  padding: 0px;
+}
+
+/* Force show number input spin buttons (carrots) - Cross-browser attempts */
+input.quantity-input::-webkit-outer-spin-button,
+input.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: inner-spin-button;
+  opacity: 1 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+input.quantity-input {
+  -moz-appearance: textfield;
+}
+
+/* Specific centering for the quantity input within its cell */
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  padding-right: 0;
+  display: block;
+  margin: 0 auto;
+}
+
+/* --- Title Column (5th Column) - Only content styling, width handled by <col> --- */
+.title-col-header,
+.title-col-cell {
+  text-align: left !important;
+}
+
+.title-col-header {
+  padding-left: 10px !important;
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar {
+  width: 30px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #f5f5f5;
+}
+
+/* Optional: style for when the mouse hovers over the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+::-webkit-scrollbar-button {
+  height: 48px;
+  background-color: #ccc;
+  border-radius: 4px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+::-webkit-scrollbar-button:hover {
+  background-color: #aaa;
+}
+
+::-webkit-scrollbar-button:vertical:start {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3E%3Cpath d='M7 14l5-5 5 5z'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-button:vertical:end {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}

@@ -1,0 +1,112 @@
+@model List<List<string>>
+
+@{
+    ViewData["Title"] = "Creating Retailer Orders";
+    Layout = "_Layout";
+    ViewData["BodyClass"] = "sheet-data-page";    
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+@* The search bar remains outside the table header *@
+<form asp-controller="Home" asp-action="SheetData" method="get" id="searchForm">
+    <div class="input-group">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="searchQuery" name="searchQuery" value="@ViewBag.CurrentFilter"
+               placeholder="Search by SKU or Title" aria-label="Search by SKU or Title" autocomplete="off" />
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-info" role="alert">
+        @ViewBag.Message
+    </div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive-container" tabindex="0"> @* NEW: Wrapper for scrollable table *@
+        <table id="dataTable" class="table table-bordered">
+            <colgroup>
+                <col style="width: 10%;"> <col style="width: 7%;"> <col style="width: 12%;"> <col style="width: 7%;">  <col style="width: 37%;">  <col style="width: 9%;">  <col style="width: 9%;">  <col style="width: 9%;">  </colgroup>
+            <thead id="stickyTableHeader">
+                <tr>
+                    <th colspan="8" class="text-start align-middle top-header-row-bg">
+                        <div class="form-check form-switch d-inline-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" role="switch" id="showSelectedToggle">
+                            <label class="form-check-label" for="showSelectedToggle">Show selected</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="dropdown" id="selectedItemsDropdownContainer">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle-custom" type="button" id="selectedCountDropdownToggle" aria-expanded="false">
+                                <span id="selectedCount">0 selected</span> <span class="caret">&#9660;</span>
+                            </button>
+                            <div class="dropdown-menu-custom" aria-labelledby="selectedCountDropdownToggle" id="selectedItemsDropdownMenu">
+                                <button class="dropdown-item-custom" type="button" id="unselectAllBtn">Unselect all</button>
+                            </div>
+                        </div>
+                    </th>
+                    
+                    @* --- MODIFIED HEADERS START HERE --- *@
+                    <th class="qty-col-header">Qty</th>
+                    <th class="product-page-header">Click Image to Open Product Page</th>
+                    
+                    @* Explicit headers for SKU, Title, Artist, Unit Price *@
+                    @* Note: Model.First() is the header row from your Google Sheet *@
+                    @if (Model.Any() && Model.First().Count > 2) { <th class="sku-col-header">@Model.First()[2]</th> } @* SKU (original row[2]) *@
+                    @if (Model.Any() && Model.First().Count > 3) { <th class="title-col-header">@Model.First()[3]</th> } @* Title (original row[3]) *@
+                    @if (Model.Any() && Model.First().Count > 4) { <th class="artist-col-header">@Model.First()[4]</th> } @* Artist (original row[4]) *@
+                    @if (Model.Any() && Model.First().Count > 5) { <th class="unit-price-col-header">@Model.First()[5]</th> } @* Unit Price (original row[5]) *@
+
+                    <th>Total Price</th> @* This is the 8th column header *@
+                    @* --- MODIFIED HEADERS END HERE --- *@
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                @foreach (var row in Model.Skip(1)) @* Skip header row from the model data *@
+                {
+                    <tr data-unit-price="@(row.Count > 5 ? row[5] : "0")">
+                        <td><input type="checkbox" name="selectedItems" class="row-checkbox" value="@(string.Join("|", row))" /></td>
+                        
+                        @* --- MODIFIED DATA CELLS START HERE --- *@
+                        <td class="qty-col-cell" title="Click row to increment quantity by 1">
+                            <input type="number" class="form-control quantity-input" value="" min="0" />
+                        </td>
+                        <td class="product-page-cell">
+                            <a href="@(row.Count > 1 ? row[1] : "#")" target="_blank" rel="noopener noreferrer" class="product-link">
+                                <img src="@(row.Count > 0 ? row[0] : "")" alt="Product Image" loading="lazy" class="product-image" />
+                            </a>
+                        </td>
+                        
+                        @* Explicit data cells for SKU, Title, Artist, Unit Price *@
+                        <td class="sku-col-cell">@(row.Count > 2 ? row[2] : "")</td>
+                        <td class="title-col-cell" title="@(row.Count > 3 ? row[3] : "")">@(row.Count > 3 ? row[3] : "")</td>
+                        <td class="artist-col-cell">@(row.Count > 4 ? row[4] : "")</td>
+                        <td class="unit-price-col-cell">@(row.Count > 5 ? row[5] : "")</td>
+
+                        <td class="total-price-cell"></td> @* This is the 8th data cell *@
+                        @* --- MODIFIED DATA CELLS END HERE --- *@
+                    </tr>
+                }
+            </tbody>
+            <tfoot> @* NEW: Table Footer *@
+                <tr id="footerSummaryRow">
+                    <td colspan="7" class="text-end fw-bold">Grand Total:</td> @* Corrected colspan to 7 to span columns 1-7 *@
+                    <td id="overallGrandTotal" class="fw-bold"></td> @* This will align with the 8th column (Total Price) *@
+                </tr>
+            </tfoot>
+        </table>
+    </div> @* END: table-responsive-container *@
+}
+else
+{
+    <p>No data to display or an error occurred.</p>
+}
+
+@section Scripts {
+    <script src="~/js/sheetdata.js" asp-append-version="true"></script>
+}
