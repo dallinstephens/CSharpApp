@@ -106,3 +106,4 @@ C:\Users\Dallin_Stephens\Documents\BYU-I Courses\CSE 310 Applied Programming\CSh
 C:\Users\Dallin_Stephens\Documents\BYU-I Courses\CSE 310 Applied Programming\CSharpApp\obj\Debug\net9.0\CSharpApp.csproj.Up2Date
 C:\Users\Dallin_Stephens\Documents\BYU-I Courses\CSE 310 Applied Programming\CSharpApp\obj\Debug\net9.0\compressed\h1lgkkvigz-8m6abelh09.gz
 C:\Users\Dallin_Stephens\Documents\BYU-I Courses\CSE 310 Applied Programming\CSharpApp\obj\Debug\net9.0\compressed\jr4sg15iy1-ivt686f7j2.gz
+C:\Users\Dallin_Stephens\Documents\BYU-I Courses\CSE 310 Applied Programming\CSharpApp\obj\Debug\net9.0\CSharpApp.sourcelink.json

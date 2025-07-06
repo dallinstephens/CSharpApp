@@ -1,0 +1,13 @@
+# Gitignore for CSharpApp based on 'ls' output
+
+# Build output directories - ALWAYS IGNORE
+bin/
+obj/
+
+# --- Optional Ignores ---
+# Uncomment the line below if appsettings.Development.json
+# contains sensitive information (like the Spreadsheet ID)
+# that you do NOT want committed to your repository.
+# If you uncomment this, make sure to use .NET User Secrets
+# for local development instead.
+# appsettings.Development.json
